@@ -265,7 +265,7 @@ window.addEventListener("load", function () {
 				}, false;
 				var NewElement = document.createElement('section');
 				NewElement.id = 'resourceNote';
-				NewElement.class = 'mrgn-tp-md';
+				NewElement.className = 'mrgn-tp-md';
 				NewElement.innerHTML = resourceNote;
 				NewElement.appendAfter(document.getElementsByClassName('ec-abstract')[0]);
 			} else {
