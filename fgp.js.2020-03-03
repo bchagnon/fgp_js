@@ -169,59 +169,102 @@ function fgpGetNumberOfCartItems() {
 }
 window.addEventListener("load", function () {
 	if (window.location.pathname.indexOf("/geonetwork/metadata/") > -1) {
-		var DEBUG = false;
 		var lang = document.documentElement.lang;
-		// var provTrgt = "bc";
+		var ulu = {
+			"en": "Use Limitation",
+			"fr": "Limitation d'utilisation"
+		};
+		var ogl = {
+			"en": "Open Government Licence - ",
+			"fr": "Licence du gouvernement ouvert - "
+		};
+		var govof = {
+			"en": "Government of ",
+			"fr": "Gouvernement de "
+		};
 		var provinces = [{
 				"abbr": "ab",
-				"en": "Government of Alberta",
-				"fr": "Gouvernement de l'Alberta",
-				"needle": "webready-alberta-300x300png.jpg"
+				"en": [{
+						"pfx": "",
+						"name": "Alberta"
+					}
+				],
+				"fr": [{
+						"pfx": "l'",
+						"name": "Alberta"
+					}
+				]
 			}, {
 				"abbr": "bc",
-				"en": "Government of British Columbia",
-				"fr": "Gouvernement de la Colombie-Britannique",
-				"needle": "BCLogo.jpg"
+				"en": [{
+						"pfx": "",
+						"name": "British Columbia"
+					}
+				],
+				"fr": [{
+						"pfx": "la ",
+						"name": "Colombie-Britannique"
+					}
+				]
 			}, {
 				"abbr": "nl",
-				"en": "Government of Newfoundland and Labrador",
-				"fr": "Gouvernement de Terre-Neuve-et-Labrador",
-				"needle": "government-brand-small.png",
-				"needle_fr": "gnllogo_fr.jpg"
+				"en": [{
+						"pfx": "",
+						"name": "Newfoundland and Labrador"
+					}
+				],
+				"fr": [{
+						"pfx": "",
+						"name": "Terre-Neuve-et-Labrador"
+					}
+				]
 			}, {
 				"abbr": "ns",
-				"en": "Government of Nova Scotia",
-				"fr": "Gouvernement de la Nouvelle-Écosse",
-				"needle": "nsvip-en.svg",
-				"needle_fr": "nsvip-fr.svg"
+				"en": [{
+						"pfx": "",
+						"name": "Nova Scotia"
+					}
+				],
+				"fr": [{
+						"pfx": "la ",
+						"name": "Nouvelle-Écosse"
+					}
+				]
 			}, {
 				"abbr": "on",
-				"en": "Government of Ontario",
-				"fr": "Gouvernement de l'Ontario",
-				"needle": "ontario_logo.gif"
+				"en": [{
+						"pfx": "",
+						"name": "Ontario"
+					}
+				],
+				"fr": [{
+						"pfx": "l'",
+						"name": "Ontario"
+					}
+				]
 			}, {
 				"abbr": "pei",
-				"en": "Government of Prince Edward Island",
-				"fr": "Gouvernement de l'Île-du-Prince-Édouard",
-				"needle": "logo.png",
-				"needle_fr": "pei-logo-fr.png"
+				"en": [{
+						"pfx": "",
+						"name": "Prince Edward Island"
+					}
+				],
+				"fr": [{
+						"pfx": "l'",
+						"name": "Île-du-Prince-Édouard"
+					}
+				]
 			}
 		];
-		// var provincesInfo = provinces.filter(province => province.abbr === provTrgt);
-		var haystackTargetElementA = document.querySelector('details[id^="details-thumbnail-"]').getElementsByTagName('div')[0];
-		var haystackTargetElementB = haystackTargetElementA.getElementsByTagName('img')[0];
-		var haystack = haystackTargetElementB.src ? haystackTargetElementB.src : '';
-		// var needle = provincesInfo[0].needle;
 		var len = provinces.length;
+		// Get haystack string inside <main role="main" property="mainContentOfPage" class="container">
+		var haystack = document.querySelector("main.container").innerText;
 		for (var i = 0; i < len; i++) {
 			var province = provinces[i];
-			if (lang === 'fr' && province.needle_fr) {
-				needle = province.needle_fr;
-			} else {
-				needle = province.needle;
-			}
-			if (haystack.toLowerCase().includes(needle.toLowerCase())) {
-				// var resourceNote = '<details class="alert alert-info" id="' + provincesInfo[0].abbr + '-content" open="open">';
+			needle = ogl[lang] + province[lang][0].name;
+			const oglRegex = new RegExp(ulu[lang] + '.*\\n.*' + needle);
+			const result = oglRegex.test(haystack);
+			if (result) {
 				var resourceNote = '<details class="alert alert-info" id="' + province.abbr + '-content" open="open">';
 				resourceNote += '<summary class="h4"><h4>';
 				if (lang === 'fr') {
@@ -229,8 +272,7 @@ window.addEventListener("load", function () {
 				} else {
 					resourceNote += 'Made available by the ';
 				}
-				// resourceNote += provincesInfo[0][lang];
-				resourceNote += province[lang];
+				resourceNote += govof[lang] + province[lang][0].pfx + province[lang][0].name;
 				resourceNote += '</h4></summary>';
 				if (lang === 'fr') {
 					resourceNote += '<p>Ces ressources ne sont pas contrôlées par le gouvernement du Canada, et l’hyperlien est fourni uniquement pour ';
@@ -257,20 +299,17 @@ window.addEventListener("load", function () {
 					resourceNote += 'information.</p>';
 				}
 				resourceNote += '</details>';
-				Element.prototype.appendBefore = function (element) {
-					element.parentNode.insertBefore(this, element);
-				}, false;
 				Element.prototype.appendAfter = function (element) {
 					element.parentNode.insertBefore(this, element.nextSibling);
-				}, false;
+				},
+				false;
 				var NewElement = document.createElement('section');
 				NewElement.id = 'resourceNote';
 				NewElement.className = 'mrgn-tp-md';
 				NewElement.innerHTML = resourceNote;
 				NewElement.appendAfter(document.getElementsByClassName('ec-abstract')[0]);
-			} else {
-				DEBUG && console.log("No provincial government resource found for " + province.en);
-			}
+				break;
+			} 
 		}
 	}
 })
