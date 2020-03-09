@@ -175,83 +175,167 @@ window.addEventListener("load", function () {
 			"fr": "Limitation d'utilisation"
 		};
 		var ogl = {
-			"en": "Open Government Licence - ",
-			"fr": "Licence du gouvernement ouvert - "
+			"en": "Open Government Licence",
+			"fr": "Licence du gouvernement ouvert"
 		};
 		var govof = {
-			"en": "Government of ",
-			"fr": "Gouvernement de "
+			"en": "Government",
+			"fr": "Gouvernement"
 		};
 		var provinces = [{
-				"abbr": "ab",
-				"en": [{
-						"pfx": "",
-						"name": "Alberta"
-					}
-				],
-				"fr": [{
-						"pfx": "l'",
-						"name": "Alberta"
-					}
-				]
-			}, {
 				"abbr": "bc",
 				"en": [{
-						"pfx": "",
+						"pfx": " of ",
 						"name": "British Columbia"
 					}
 				],
 				"fr": [{
-						"pfx": "la ",
+						"pfx": " de la ",
 						"name": "Colombie-Britannique"
 					}
 				]
 			}, {
-				"abbr": "nl",
+				"abbr": "ab",
 				"en": [{
-						"pfx": "",
-						"name": "Newfoundland and Labrador"
+						"pfx": " of ",
+						"name": "Alberta"
 					}
 				],
 				"fr": [{
-						"pfx": "",
-						"name": "Terre-Neuve-et-Labrador"
+						"pfx": " de l'",
+						"name": "Alberta"
 					}
 				]
 			}, {
-				"abbr": "ns",
+				"abbr": "sk",
 				"en": [{
-						"pfx": "",
-						"name": "Nova Scotia"
+						"pfx": " of ",
+						"name": "Saskatchewan"
 					}
 				],
 				"fr": [{
-						"pfx": "la ",
-						"name": "Nouvelle-Écosse"
+						"pfx": " de la ",
+						"name": "Saskatchewan"
+					}
+				]
+			}, {
+				"abbr": "mb",
+				"en": [{
+						"pfx": " of ",
+						"name": "Manitoba"
+					}
+				],
+				"fr": [{
+						"pfx": " du ",
+						"name": "Manitoba"
 					}
 				]
 			}, {
 				"abbr": "on",
 				"en": [{
-						"pfx": "",
+						"pfx": " of ",
 						"name": "Ontario"
 					}
 				],
 				"fr": [{
-						"pfx": "l'",
+						"pfx": " de l'",
 						"name": "Ontario"
 					}
 				]
 			}, {
-				"abbr": "pei",
+				"abbr": "qc",
 				"en": [{
-						"pfx": "",
+						"pfx": " of ",
+						"name": "Quebec"
+					}
+				],
+				"fr": [{
+						"pfx": " du ",
+						"name": "Québec"
+					}
+				]
+			}, {
+				"abbr": "nb",
+				"en": [{
+						"pfx": " of ",
+						"name": "New Brunswick"
+					}
+				],
+				"fr": [{
+						"pfx": " du ",
+						"name": "Nouveau-Brunswick"
+					}
+				]
+			}, {
+				"abbr": "ns",
+				"en": [{
+						"pfx": " of ",
+						"name": "Nova Scotia"
+					}
+				],
+				"fr": [{
+						"pfx": " de la ",
+						"name": "Nouvelle-Écosse"
+					}
+				]
+			}, {
+				"abbr": "pe",
+				"en": [{
+						"pfx": " of ",
 						"name": "Prince Edward Island"
 					}
 				],
 				"fr": [{
-						"pfx": "l'",
+						"pfx": " de l'",
 						"name": "Île-du-Prince-Édouard"
+					}
+				]
+			}, {
+				"abbr": "nl",
+				"en": [{
+						"pfx": " of ",
+						"name": "Newfoundland and Labrador"
+					}
+				],
+				"fr": [{
+						"pfx": " de ",
+						"name": "Terre-Neuve-et-Labrador"
+					}
+				]
+			}, {
+				"abbr": "yt",
+				"en": [{
+						"pfx": " of ",
+						"name": "Yukon"
+					}
+				],
+				"fr": [{
+						"pfx": " du ",
+						"name": "Yukon"
+					}
+				]
+			}, {
+				"abbr": "nt",
+				"en": [{
+						"pfx": " of ",
+						"name": "Northwest Territories"
+					}
+				],
+				"fr": [{
+						"pfx": " des ",
+						"name": "Territoires du Nord-Ouest"
+					}
+				]
+			}, {
+				"abbr": "nu",
+				"en": [{
+						"pfx": " of ",
+						"name": "Nunavut"
+					}
+				],
+				"fr": [{
+						"pfx": " du ",
+						"name": "Nunavut"
 					}
 				]
 			}
@@ -261,8 +345,7 @@ window.addEventListener("load", function () {
 		var haystack = document.querySelector("main.container").innerText;
 		for (var i = 0; i < len; i++) {
 			var province = provinces[i];
-			needle = ogl[lang] + province[lang][0].name;
-			const oglRegex = new RegExp(ulu[lang] + '.*\\n.*' + needle);
+			const oglRegex = new RegExp(ulu[lang] + '.*\\n.*' + ogl[lang] + '\\s[-–—]\\s' + province[lang][0].name);
 			const result = oglRegex.test(haystack);
 			if (result) {
 				var resourceNote = '<details class="alert alert-info" id="' + province.abbr + '-content" open="open">';
